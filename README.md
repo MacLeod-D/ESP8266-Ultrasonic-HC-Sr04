@@ -32,6 +32,9 @@ HC-SR04 gets a 10µs Trigger pulse, sends 8 cycles of 40 Khz tone and:
 
 <h3>Concept</h3>
 
+Here I use my *CoopOS* to start different Taks:  
+
+
 A measurement cycle is started from **Task1** :
 - set IrqActive=true;
 - sends 10µs Trigger signal
@@ -61,7 +64,7 @@ Prints the results every 500 ms (twice a second) an shows some alarms like
 - when something changes the measured distance suddenly (like a cat runnung through the echo path ;)
 
 
-<h3>MySer</h3>
+<h3>MySer and CoopOS</h3>
 Spreads serial output to one character every 50 µs and write to the Uart-Fifo directly.<br>
 Serial output is a bottleneck of multitasking.<br>
 The Scheduler here is called every 3 µs - when serial output is done it is prolonged to 24 µs.<br>
