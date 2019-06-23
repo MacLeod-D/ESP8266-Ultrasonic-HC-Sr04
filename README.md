@@ -138,11 +138,8 @@ So the gaps in calling the *Scheduler* are reduced to about a maximum of 14µs.
 The Scheduler here is called every 3 µs - when serial output is done it is prolonged to 40 µs.<br>
 That is acceptable in most programs.<br>
 
-<http://./image1.jpg> Image1
-
-![Alt text](./image3.jpg?raw=true "Image3")
-
-![ScreenShot](https://raw.githubusercontent.com/MacLeod-D/ESP8266-Ultrasonic-HC-Sr04/image3.jpg)
+** CoopOS cycle time during serial output:**<br>
+![Image3](./image3.jpg?raw=true "Image3")
 
 
  **CoopOS** does cooperative multitasking written in pure ANSI-C.   
