@@ -140,6 +140,8 @@ That is acceptable in most programs.<br>
 
 <http://./image1.jpg> Image1
 
+![Alt text](./image3.jpg?raw=true "Image3")
+
 
  **CoopOS** does cooperative multitasking written in pure ANSI-C.   
  - It is *very* fast  (here up to 200000 task switcher per second).
