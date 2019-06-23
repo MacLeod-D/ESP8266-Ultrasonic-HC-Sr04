@@ -32,7 +32,7 @@ HC-SR04 gets a 10µs Trigger pulse, sends 8 cycles of 40 Khz tone and:
 
 <h3>Concept</h3>
 
-Here I use my *CoopOS* to start different Taks:  
+Here I use my **CoopOS** to start different Taks:  
 
 
 A measurement cycle is started from **Task1** :
