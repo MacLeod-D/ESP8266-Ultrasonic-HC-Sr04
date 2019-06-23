@@ -60,6 +60,7 @@ A measurement cycle is started from **Task1** :
 - waits for IrqActive=LOW  OR   Timeout
 - filters the result:
 
+<code>
     //-----------------------------
     // Send 10 µs High-Pulse and
     // wait for irq ready, delay, then next pulse
@@ -107,6 +108,7 @@ A measurement cycle is started from **Task1** :
         value=value*0.9 + (0.1*diff); // filtering for noise reduction
       }
     }
+</code>
 
 and starts again after a delay of 20 ms (30 ms if the distance to measure is small)
 
@@ -117,32 +119,41 @@ The time mStart and mEnd are measured with an interrupt routine, which fires at 
 It tests the edge(up,down) and remebers mStart, mEnd.<br>
 
 <h3>Task2</h3>
-Prints the results every 500 ms (twice a second) an shows some alarms like
+Task2 is not involved in measurements! It even does not know, if there are measurements.
+
+It just reads the values produces by Task1 and prints the results every 500 ms (twice a second) an shows some alarms like
 - Timeout (val==0)
 - distances lower than 300 mm (as an example)
 - when something changes the measured distance suddenly (like a cat runnung through the echo path ;)
 
 
-<h3>MySer and CoopOS</h3>
-Spreads serial output to one character every 50 µs and write to the Uart-Fifo directly.<br>
-Serial output is a bottleneck of multitasking.<br>
-The Scheduler here is called every 3 µs - when serial output is done it is prolonged to 24 µs.<br>
+<h3>MySer and CoopOS (Task3></h3>
+Serial output is a bottleneck.<br>
+Here the output is done with a subclass of *Stream* and is written to OutBuf[] which is much faster.<br>
+
+The Task **MySer** prints the contents of the buffer - every 50 µs one character.<br>
+So the gaps in calling the *Scheduler* are reduced to about a maximum of 14µs.
+
+*MyYser* stretches the  serial output to one character every 50 µs and write to the Uart-Fifo directly.<br>
+The Scheduler here is called every 3 µs - when serial output is done it is prolonged to 40 µs.<br>
 That is acceptable in most programs.<br>
 
+<http://./images/image1.jpg>Image1
 
 
- CoopOS does cooperative multitasking written in pure ANSI-C.   
+ **CoopOS** does cooperative multitasking written in pure ANSI-C.   
  - It is *very* fast  (here up to 200000 task switcher per second).
  - has a small footprint (here 28 bytes per task ).  
  - reliable   
  - using microseconds, not milliseconds !
+ - Less than 100 lines of code
 
-\warning 
+**Warning**
 CoopOS is NOT intended to do numbercrunching !<br>
 A lot of time (more than 50%) is used to manage itself.<br>
 That's not a failure but a feature;<br>
 
-It is not possible to reach more than 200000 taskswitches per second using only a little amount of processor time.<br>
+It is not possible to reach more than 160000 taskswitches per second using only a little amount of processor time.<br>
 
 But  it is possible to test for instandce a whole port and start - if any pin has changed - a task blocked until then.<br>
 You can do it *before* the scheduler is doing its normal work and that can be as fast as an interrupt - but you have all the possibilities>br>
@@ -155,7 +166,7 @@ working with Shift Registers, running stepper motors ...etc.<br>
 This is for all the embedded systems, which do NOTHING most of the time. And that is right for most of them.>br>
 
 
-\note
+**Note**
 There is an Esp8266 freeRTOS SDK version<br>
 Test it - if it may fulfills your timing neeeds!
 
