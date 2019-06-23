@@ -141,6 +141,9 @@ That is acceptable in most programs.<br>
 ** CoopOS cycle time during serial output:**<br>
 ![Image3](./image3.jpg?raw=true "Image3")
 
+![Doxgen](./doc/doxy/index.html?raw=true "Doxygen Output")
+
+
 
  **CoopOS** does cooperative multitasking written in pure ANSI-C.   
  - It is *very* fast  (here up to 200000 task switcher per second).
