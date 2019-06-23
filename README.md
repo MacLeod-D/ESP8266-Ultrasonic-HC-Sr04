@@ -7,7 +7,7 @@ HC-SR04 gets a 10µs Trigger pulse, sends 8 cycles of 40 Khz tone and:
 - sets Echo signal HIGH
 - sets Echo signal LOW, when Echo arrived:
 
-
+<code>
 
     IrqActive:
        true                                 false
@@ -28,7 +28,7 @@ HC-SR04 gets a 10µs Trigger pulse, sends 8 cycles of 40 Khz tone and:
              mStart                        mEnd
     measured
     time:       <--------------------------->
-
+</(code>
 
 <h3>Concept</h3>
 
