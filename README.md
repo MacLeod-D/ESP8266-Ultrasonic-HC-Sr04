@@ -32,14 +32,73 @@ HC-SR04 gets a 10µs Trigger pulse, sends 8 cycles of 40 Khz tone and:
 
 <h3>Concept</h3>
 
-Here I use my **CoopOS** to start different Taks:  
+Here I use my **CoopOS** to start different Tasks and the use of interrupts.  
 
+The first level is an Interrupt routine:
+
+    // Interrupt as response "Echo"of 10µs "Trigger" signal
+    void IRQ_Echo() {
+    IrqCount++;
+        if (*GPIO_IN & 1) {                 // this is rising edge a pin 0 = D3
+            mStart=micros();  
+        }
+        else {
+            mEnd=micros();                 // falling edge
+            IrqActive=false;               // IRQ measurement is reaDY
+        }
+    }
+
+It is a "CHANGE" interrupt which is called by the Echo-evens mStart and mEnd of the HC-SR04.
+
+To produce such interrupts the HC-SR04 must get a 10 µs pulse at "Trigger" line.
+
+This is done by **CoopOS** Task_10us:
 
 A measurement cycle is started from **Task1** :
 - set IrqActive=true;
 - sends 10µs Trigger signal
 - waits for IrqActive=LOW  OR   Timeout
 - filters the result:
+
+    //-----------------------------
+    // Send 10 µs High-Pulse and
+    // wait for irq ready, delay, then next pulse
+    
+    uint32_t Task_10us() {
+    static int counter;  
+      taskBegin();
+      // send one 10µs pulse, then stop
+      while(1) {
+        IrqActive=true;                   // reset by IRQ falling edge
+        GPOS = (1<<D5);                   // send 10µs pulse
+        taskDelay(10);
+        GPOC = (1<<D5);
+    
+        // wait on answer of interrupt routine - timeout 100*1000 µs =100ms
+        counter=0;
+        while((IrqActive==true) && (counter<100)) {
+          taskDelay(1000); counter++;
+        }
+    
+        if (counter<100) {                // no timeout
+          diff= (double)(mEnd-mStart);
+          if (diff<20000) {
+            value=value*0.9 + (0.1*diff); // filtering for noise reduction
+          }
+        }
+        else value=0;                     // timeout: no answer pulse
+            
+        taskDelay(20000);
+        if(diff<2000) {                   // small distances need extra delay !
+          taskDelay(10000);
+        }
+    
+        // Next pulse is initiated now
+        
+      }
+      taskEnd();
+    }
+
 
 
     if (counter<100) {                // no timeout
@@ -49,7 +108,7 @@ A measurement cycle is started from **Task1** :
       }
     }
 
-and starts again after a delay.   
+and starts again after a delay of 20 ms (30 ms if the distance to measure is small)
 
 About 30 measurements per second are done.
 
