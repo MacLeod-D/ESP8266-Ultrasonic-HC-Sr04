@@ -178,8 +178,9 @@ Test it - if it may fulfills your timing neeeds!
 ![CoopOS](./CooperativeMT.png?raw=true "Cooperative Multitasking")
 <br>
 <br>
-This is the central part of the <h3>CoopOS-Scheduler</h3>:<br>
-
+<p>This is the central part of the <h3>CoopOS-Scheduler</h3>:<br>
+</p>
+<br>
 <blockquote>
 <code>
 
