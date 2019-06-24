@@ -184,31 +184,31 @@ Test it - if it may fulfills your timing neeeds!
 <blockquote>
 <code>
 
-  Priority=0;
-  MaxPriority=-1;
-  MaxPTask=-1;
+      Priority=0;
+      MaxPriority=-1;
+      MaxPTask=-1;
 
-  
-  
-  for (int i=0; i<nTasks;i++) {
-    thisTask=&Tasks[i];
-    
-    // 1. look for tasks which are READY now
-    if (thisTask->State == DELAYED) {    // State: DELAYED -> READY
-      if ((micros() - thisTask->LastCalled) > thisTask->Delay) {
-        thisTask->Delay=0;
-        thisTask->State=READY;
-      }
-    }
-    
-    // 2. look for the READY task with the highest priority
-    if (thisTask->State == READY) {
-      if (thisTask->Priority > MaxPriority) {
-        MaxPriority = thisTask->Priority;
-        MaxPTask=i;
-      }
-    }
-  } // for
+
+
+      for (int i=0; i<nTasks;i++) {
+        thisTask=&Tasks[i];
+
+        // 1. look for tasks which are READY now
+        if (thisTask->State == DELAYED) {    // State: DELAYED -> READY
+          if ((micros() - thisTask->LastCalled) > thisTask->Delay) {
+            thisTask->Delay=0;
+            thisTask->State=READY;
+          }
+        }
+
+        // 2. look for the READY task with the highest priority
+        if (thisTask->State == READY) {
+          if (thisTask->Priority > MaxPriority) {
+            MaxPriority = thisTask->Priority;
+            MaxPTask=i;
+          }
+        }
+      } // for
 </code>
 </blockquote>
 
